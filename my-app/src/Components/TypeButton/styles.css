@@ -1,0 +1,31 @@
+/* define type colors */
+:root {
+  --grass-color: #78c850;
+  --fire-color: #f08030;
+  --water-color: #0645ad;
+}
+
+/* set button hover background color to type */
+
+#grass:hover {
+  background-color: var(--grass-color);
+}
+#fire:hover {
+  background-color: var(--fire-color);
+}
+#water:hover {
+  background-color: var(--water-color);
+}
+
+button {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 10px;
+  padding: 10px;
+  font-size: 18px;
+  width: 90px;
+}
+
+button:hover {
+  color: white;
+}

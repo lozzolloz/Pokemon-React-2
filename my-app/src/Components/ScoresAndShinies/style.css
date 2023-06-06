@@ -1,0 +1,16 @@
+#scores-and-shinies {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.shinies-and-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.scores-and-shinies {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
