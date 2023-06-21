@@ -3,6 +3,20 @@
   --grass-color: #78c850;
   --fire-color: #f08030;
   --water-color: #0645ad;
+  --electric-color: #f8d030;
+  --ice-color: #98d8d8;
+  --fighting-color: #c03028;
+  --poison-color: #a040a0;
+  --ground-color: #e0c068;
+  --flying-color: #a890f0;
+  --psychic-color: #f85888;
+  --bug-color: #a8b820;
+  --rock-color: #b8a038;
+  --ghost-color: #705898;
+  --dragon-color: #7038f8;
+  --dark-color: #705848;
+  --steel-color: #b8b8d0;
+  --fairy-color: #ee99ac;
 }
 
 /* set button hover background color to type */
@@ -16,6 +30,100 @@
 #water:hover {
   background-color: var(--water-color);
 }
+#electric:hover {
+  background-color: var(--electric-color);
+}
+#ice:hover {
+  background-color: var(--ice-color);
+}
+#fighting:hover {
+  background-color: var(--fighting-color);
+}
+#poison:hover {
+  background-color: var(--poison-color);
+}
+#ground:hover {
+  background-color: var(--ground-color);
+}
+#flying:hover {
+  background-color: var(--flying-color);
+}
+#psychic:hover {
+  background-color: var(--psychic-color);
+}
+#bug:hover {
+  background-color: var(--bug-color);
+}
+#rock:hover {
+  background-color: var(--rock-color);
+}
+#ghost:hover {
+  background-color: var(--ghost-color);
+}
+#dragon:hover {
+  background-color: var(--dragon-color);
+}
+#dark:hover {
+  background-color: var(--dark-color);
+}
+#steel:hover {
+  background-color: var(--steel-color);
+}
+#fairy:hover {
+  background-color: var(--fairy-color);
+}
+
+.grass {
+  color: var(--grass-color);
+}
+.fire {
+  color: var(--fire-color);
+}
+.water {
+  color: var(--water-color);
+}
+.electric {
+  color: var(--electric-color);
+}
+.ice {
+  color: var(--ice-color);
+}
+.fighting {
+  color: var(--fighting-color);
+}
+.poison {
+  color: var(--poison-color);
+}
+.ground {
+  color: var(--ground-color);
+}
+.flying {
+  color: var(--flying-color);
+}
+.psychic {
+  color: var(--psychic-color);
+}
+.bug {
+  color: var(--bug-color);
+}
+.rock {
+  color: var(--rock-color);
+}
+.ghost {
+  color: var(--ghost-color);
+}
+.dragon {
+  color: var(--dragon-color);
+}
+.dark {
+  color: var(--dark-color);
+}
+.steel {
+  color: var(--steel-color);
+}
+.fairy {
+  color: var(--fairy-color);
+}
 
 button {
   font-family: Arial, sans-serif;
@@ -23,7 +131,7 @@ button {
   margin: 10px;
   padding: 10px;
   font-size: 18px;
-  width: 90px;
+  width: 115px;
 }
 
 button:hover {

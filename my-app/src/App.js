@@ -15,6 +15,8 @@ function App() {
   const [playerPkmnName, setPlayerPkmnName] = useState("");
   const [playerPkmnImg, setPlayerPkmnImg] = useState("");
   const [rivalType, setRivalType] = useState("");
+  const [rivalType1, setRivalType1] = useState("");
+  const [rivalType2, setRivalType2] = useState("");
   const [rivalPkmnName, setRivalPkmnName] = useState("");
   const [rivalPkmnImg, setRivalPkmnImg] = useState("");
   const [outcome, setOutcome] = useState(null);
@@ -42,7 +44,7 @@ function App() {
 
   function isItShinyRival() {
     // const randomNo = Math.floor(Math.random() * 4096);
-    const randomNo = 0;
+    const randomNo = Math.floor(Math.random() * 4096);
     if (randomNo === 0) {
       setRivalShiny(true);
     } else {
@@ -93,6 +95,20 @@ function App() {
     getRivalPkmnName(rivalType);
   }, [rivalType]);
 
+  //define rivalType 1 and rivalType2 which will be undefined if only one type
+  useEffect(() => {
+    async function getRivalType1and2(rivalPkmnName) {
+      let response = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${rivalPkmnName}`
+      );
+      let data = await response.json();
+      console.log(data);
+      setRivalType1(data.types[0].type.name);
+      setRivalType2(data.types.length > 1 ? data.types[1].type.name : null);
+    }
+    getRivalType1and2(rivalPkmnName);
+  }, [rivalPkmnName]);
+
   //get playerPkmnImg after name set
   useEffect(() => {
     async function getPlayerPkmnImg(pkmnName) {
@@ -135,10 +151,25 @@ function App() {
       );
       let data = await response.json();
       if (!rivalShiny) {
-        setRivalPkmnImg(data.sprites.front_default);
+        //pick new pokemon if no sprite
+        if (data.sprites.front_default === null) {
+          const prevType = rivalType;
+          setRivalType("");
+          setRivalType(prevType);
+        } else {
+          setRivalPkmnImg(data.sprites.front_default);
+        }
       } else {
-        setRivalPkmnImg(data.sprites.front_shiny);
-        setRivalShinyCount((prevCount) => prevCount + 1);
+        //pick shiny sprite if shiny and incread shiny count
+        //pick new pokemon if no sprite
+        if (data.sprites.front_shiny === null) {
+          const prevType = rivalType;
+          setRivalType("");
+          setRivalType(prevType);
+        } else {
+          setRivalPkmnImg(data.sprites.front_shiny);
+          setRivalShinyCount((prevCount) => prevCount + 1);
+        }
       }
     }
 
@@ -149,10 +180,17 @@ function App() {
 
   //get outcome once both pkmn names set
   useEffect(() => {
-    if (playerPkmnName !== "" && rivalPkmnName !== "") {
-      setOutcome(getOutcome(playerType, rivalType, playerPkmnName));
+    if (rivalType1 !== "" && (rivalType2 !== "" || rivalType2 !== null)) {
+      setOutcome(
+        1 *
+          getOutcome(playerType, rivalType1, playerPkmnName) *
+          getOutcome(playerType, rivalType2, playerPkmnName)
+      );
     }
-  }, [playerType, rivalType, playerPkmnName, rivalPkmnName]);
+    if (rivalType1 !== "" && rivalType2 === null) {
+      setOutcome(1 * getOutcome(playerType, rivalType1, playerPkmnName));
+    }
+  }, [playerType, rivalType1, rivalType2, playerPkmnName, rivalPkmnName]);
 
   //change game text after outcome set
   //then resetGame
@@ -165,8 +203,17 @@ function App() {
         case 2:
           setPlayerScore(playerScore + 1);
           break;
+        case 4:
+          setPlayerScore(playerScore + 2);
+          break;
         case 0.5:
           setRivalScore(rivalScore + 1);
+          break;
+        case 0.25:
+          setRivalScore(rivalScore + 2);
+          break;
+        case 0:
+          setRivalScore(rivalScore + 3);
           break;
         default:
         // no score change
@@ -175,6 +222,8 @@ function App() {
       setPlayerPkmnName("");
       setPlayerPkmnImg("");
       setRivalType("");
+      setRivalType1("");
+      setRivalType2("");
       setRivalPkmnName("");
       setRivalPkmnImg("");
       setP1("");
@@ -188,22 +237,39 @@ function App() {
 
     //run gametext
     if (outcome !== null) {
-      setP1(
-        `Your ${capitaliseName(
-          playerPkmnName
-        )} is a ${playerType}-type Pokémon!`
-      );
-      setTimeout(() => {
-        setP2(
-          `Your rival's ${capitaliseName(
-            rivalPkmnName
-          )} is a ${rivalType}-type Pokémon!`
+      if (playerType === "electric" || playerType === "ice") {
+        setP1(
+          `Your ${capitaliseName(
+            playerPkmnName
+          )} used an ${playerType}-type move!`
         );
+      } else {
+        setP1(
+          `Your ${capitaliseName(
+            playerPkmnName
+          )} used a ${playerType}-type move!`
+        );
+      }
+      setTimeout(() => {
+        if (rivalType2 === null) {
+          setP2(
+            `Your rival's ${capitaliseName(
+              rivalPkmnName
+            )} is a ${rivalType1}-type Pokémon!`
+          );
+        } else {
+          setP2(
+            `Your rival's ${capitaliseName(
+              rivalPkmnName
+            )} is a ${rivalType1}/${rivalType2}-type Pokémon!`
+          );
+        }
       }, 2000);
       setTimeout(() => {
         //update gametext dependent on outcome
         switch (outcome) {
           case 2:
+          case 4:
             setP3(
               `Your ${capitaliseName(
                 playerPkmnName
@@ -211,6 +277,7 @@ function App() {
             );
             break;
           case 0.5:
+          case 0.25:
             setP3(
               `Your ${capitaliseName(
                 playerPkmnName
@@ -220,6 +287,12 @@ function App() {
           case 1:
             setP3("Your Pokémon are evenly matched!");
             break;
+          case 0:
+            setP3(
+              `Your ${capitaliseName(playerPkmnName)}'s move had no effect...`
+            );
+            break;
+
           default:
             setP3("Error");
         }
@@ -234,7 +307,8 @@ function App() {
     playerPkmnName,
     rivalPkmnName,
     playerType,
-    rivalType,
+    rivalType1,
+    rivalType2,
     playerScore,
     rivalScore,
   ]);
@@ -244,26 +318,27 @@ function App() {
       Brock Paper Scissors
       <PlayerInstruction gamePlay={gamePlay} />
       <ButtonList onClick={handleClick} />
-      <PkmnImgsGameText
-        id="pkmnimgs-gametext"
-        playerPkmnName={playerPkmnName}
-        playerPkmnImg={playerPkmnImg}
-        p1={p1}
-        p2={p2}
-        p3={p3}
-        rivalPkmnName={rivalPkmnName}
-        rivalPkmnImg={rivalPkmnImg}
-      />
-      <ScoresAndShinies
-        playerScore={playerScore}
-        rivalScore={rivalScore}
-        playerShinyCount={playerShinyCount}
-        rivalShinyCount={rivalShinyCount}
-      />
+      <div id="gameplay-and-scores">
+        <PkmnImgsGameText
+          id="pkmnimgs-gametext"
+          playerPkmnName={playerPkmnName}
+          playerPkmnImg={playerPkmnImg}
+          p1={p1}
+          p2={p2}
+          p3={p3}
+          rivalPkmnName={rivalPkmnName}
+          rivalPkmnImg={rivalPkmnImg}
+        />
+        <ScoresAndShinies
+          id="scores-and-shinies"
+          playerScore={playerScore}
+          rivalScore={rivalScore}
+          playerShinyCount={playerShinyCount}
+          rivalShinyCount={rivalShinyCount}
+        />
+      </div>
     </div>
   );
 }
 
 export default App;
-
-//git test
