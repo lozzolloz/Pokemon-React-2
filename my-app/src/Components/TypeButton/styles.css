@@ -17,6 +17,7 @@
   --dark-color: #705848;
   --steel-color: #b8b8d0;
   --fairy-color: #ee99ac;
+  --normal-color: #a8a878;
 }
 
 /* set button hover background color to type */
@@ -72,6 +73,9 @@
 #fairy:hover {
   background-color: var(--fairy-color);
 }
+#normal:hover {
+  background-color: var(--normal-color);
+}
 
 .grass {
   color: var(--grass-color);
@@ -124,14 +128,21 @@
 .fairy {
   color: var(--fairy-color);
 }
+.normal {
+  color: var(--normal-color);
+}
 
 button {
   font-family: Arial, sans-serif;
   text-align: center;
   margin: 10px;
   padding: 10px;
-  font-size: 18px;
-  width: 115px;
+  font-size: 14px;
+  width: 85px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 button:hover {

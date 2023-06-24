@@ -1,9 +1,9 @@
-export default function getOutcome(playerType, rivalType, playerPkmnName) {
+export default function getOutcome(attackerType, defenderType) {
   let outcome;
 
-  switch (playerType) {
+  switch (attackerType) {
     case "grass":
-      switch (rivalType) {
+      switch (defenderType) {
         case "water":
         case "ground":
         case "rock":
@@ -24,7 +24,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "water":
-      switch (rivalType) {
+      switch (defenderType) {
         case "fire":
         case "ground":
         case "rock":
@@ -41,7 +41,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "fire":
-      switch (rivalType) {
+      switch (defenderType) {
         case "grass":
         case "ice":
         case "bug":
@@ -60,7 +60,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "normal":
-      switch (rivalType) {
+      switch (defenderType) {
         case "rock":
         case "steel":
           outcome = 0.5;
@@ -74,7 +74,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "electric":
-      switch (rivalType) {
+      switch (defenderType) {
         case "water":
         case "flying":
           outcome = 2;
@@ -93,7 +93,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "ice":
-      switch (rivalType) {
+      switch (defenderType) {
         case "grass":
         case "ground":
         case "flying":
@@ -112,7 +112,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "fighting":
-      switch (rivalType) {
+      switch (defenderType) {
         case "normal":
         case "ice":
         case "rock":
@@ -136,7 +136,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "poison":
-      switch (rivalType) {
+      switch (defenderType) {
         case "grass":
         case "fairy":
           outcome = 2;
@@ -156,7 +156,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "ground":
-      switch (rivalType) {
+      switch (defenderType) {
         case "fire":
         case "electric":
         case "poison":
@@ -177,7 +177,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "flying":
-      switch (rivalType) {
+      switch (defenderType) {
         case "grass":
         case "fighting":
         case "bug":
@@ -194,7 +194,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "psychic":
-      switch (rivalType) {
+      switch (defenderType) {
         case "fighting":
         case "poison":
           outcome = 2;
@@ -212,7 +212,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "bug":
-      switch (rivalType) {
+      switch (defenderType) {
         case "grass":
         case "psychic":
         case "dark":
@@ -232,7 +232,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "rock":
-      switch (rivalType) {
+      switch (defenderType) {
         case "fire":
         case "ice":
         case "flying":
@@ -250,7 +250,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "ghost":
-      switch (rivalType) {
+      switch (defenderType) {
         case "psychic":
         case "ghost":
           outcome = 2;
@@ -267,7 +267,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "dragon":
-      switch (rivalType) {
+      switch (defenderType) {
         case "dragon":
           outcome = 2;
           break;
@@ -283,7 +283,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "dark":
-      switch (rivalType) {
+      switch (defenderType) {
         case "psychic":
         case "ghost":
           outcome = 2;
@@ -299,7 +299,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "steel":
-      switch (rivalType) {
+      switch (defenderType) {
         case "ice":
         case "rock":
         case "fairy":
@@ -317,7 +317,7 @@ export default function getOutcome(playerType, rivalType, playerPkmnName) {
       break;
 
     case "fairy":
-      switch (rivalType) {
+      switch (defenderType) {
         case "fighting":
         case "dragon":
         case "dark":

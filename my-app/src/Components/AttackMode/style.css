@@ -1,0 +1,36 @@
+/* :root {
+  --pkmn-blue: #3466af;
+  --pkmn-yellow: #ffc805;
+} */
+
+#mode-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mode-button {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10%;
+}
+
+#active-mode {
+  font-size: 14px;
+  width: 70px;
+  height: 38px;
+  background-color: white;
+  color: red;
+  border-color: black;
+}
+
+#inactive-mode {
+  font-size: 11px;
+  width: 50px;
+  height: 30px;
+  background-color: white;
+  color: grey;
+  border-color: grey;
+}

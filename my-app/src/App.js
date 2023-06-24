@@ -7,16 +7,24 @@ import getOutcome from "./functions/getOutcome";
 import capitaliseName from "./functions/capitaliseName";
 import ScoresAndShinies from "./Components/ScoresAndShinies";
 import PkmnImgsGameText from "./Components/PkmnImgsGameText";
+import AttackMode from "./Components/AttackMode";
+import BrockPhoto from "./Components/BrockPhoto";
+import brockAttack from "./images/brock-attack.png";
+import brockDefend from "./images/brock-defend.png";
+import brockShinyRival from "./images/brock-shiny-rival.png";
+import brockShinyPlayer from "./images/brock-shiny-player.png";
+import brockShinyDouble from "./images/brock-shiny-double.png";
 
 function App() {
   //create states
+  const [brockPhoto, setBrockPhoto] = useState(brockAttack);
   const [gamePlay, setGameplay] = useState(true);
   const [playerType, setPlayerType] = useState("");
   const [playerPkmnName, setPlayerPkmnName] = useState("");
   const [playerPkmnImg, setPlayerPkmnImg] = useState("");
   const [rivalType, setRivalType] = useState("");
-  const [rivalType1, setRivalType1] = useState("");
-  const [rivalType2, setRivalType2] = useState("");
+  const [defenderType1, setDefenderType1] = useState("");
+  const [defenderType2, setDefenderType2] = useState("");
   const [rivalPkmnName, setRivalPkmnName] = useState("");
   const [rivalPkmnImg, setRivalPkmnImg] = useState("");
   const [outcome, setOutcome] = useState(null);
@@ -29,12 +37,15 @@ function App() {
   const [rivalShiny, setRivalShiny] = useState(false);
   const [playerShinyCount, setPlayerShinyCount] = useState(0);
   const [rivalShinyCount, setRivalShinyCount] = useState(0);
+  const [attackMode, setAttackMode] = useState(true);
 
   //functions to decide if shiny
 
   function isItShinyPlayer() {
-    const randomNo = Math.floor(Math.random() * 4096);
+    // const randomNo = Math.floor(Math.random() * 4096);
+     const randomNo = Math.floor(Math.random() * 100);
     // const randomNo = 0;
+
     if (randomNo === 0) {
       setPlayerShiny(true);
     } else {
@@ -44,7 +55,8 @@ function App() {
 
   function isItShinyRival() {
     // const randomNo = Math.floor(Math.random() * 4096);
-    const randomNo = Math.floor(Math.random() * 4096);
+    const randomNo = Math.floor(Math.random() * 100);
+    // const randomNo = 0;
     if (randomNo === 0) {
       setRivalShiny(true);
     } else {
@@ -95,18 +107,22 @@ function App() {
     getRivalPkmnName(rivalType);
   }, [rivalType]);
 
-  //define rivalType 1 and rivalType2 which will be undefined if only one type
+  //define defenderType 1 and defenderType2 which will be undefined if only one type
   useEffect(() => {
-    async function getRivalType1and2(rivalPkmnName) {
+    async function getDefenderType1and2(pkmnName) {
       let response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${rivalPkmnName}`
+        `https://pokeapi.co/api/v2/pokemon/${pkmnName}`
       );
       let data = await response.json();
       console.log(data);
-      setRivalType1(data.types[0].type.name);
-      setRivalType2(data.types.length > 1 ? data.types[1].type.name : null);
+      setDefenderType1(data.types[0].type.name);
+      setDefenderType2(data.types.length > 1 ? data.types[1].type.name : null);
     }
-    getRivalType1and2(rivalPkmnName);
+    if (attackMode === true) {
+      getDefenderType1and2(rivalPkmnName);
+    } else {
+      getDefenderType1and2(playerPkmnName);
+    }
   }, [rivalPkmnName]);
 
   //get playerPkmnImg after name set
@@ -174,23 +190,28 @@ function App() {
     }
 
     getRivalPkmnImg(rivalPkmnName);
-  }, [rivalPkmnName, rivalShiny]);
+  }, [rivalPkmnName, rivalShiny, rivalType]);
 
   //define outcomes
 
   //get outcome once both pkmn names set
   useEffect(() => {
-    if (rivalType1 !== "" && (rivalType2 !== "" || rivalType2 !== null)) {
+    let attackerType = attackMode ? playerType : rivalType;
+
+    if (
+      defenderType1 !== "" &&
+      (defenderType2 !== "" || defenderType2 !== null)
+    ) {
       setOutcome(
         1 *
-          getOutcome(playerType, rivalType1, playerPkmnName) *
-          getOutcome(playerType, rivalType2, playerPkmnName)
+          getOutcome(attackerType, defenderType1) *
+          getOutcome(attackerType, defenderType2)
       );
     }
-    if (rivalType1 !== "" && rivalType2 === null) {
-      setOutcome(1 * getOutcome(playerType, rivalType1, playerPkmnName));
+    if (defenderType1 !== "" && defenderType2 === null) {
+      setOutcome(1 * getOutcome(attackerType, defenderType1));
     }
-  }, [playerType, rivalType1, rivalType2, playerPkmnName, rivalPkmnName]);
+  }, [attackMode, playerType, rivalType, defenderType1, defenderType2]);
 
   //change game text after outcome set
   //then resetGame
@@ -201,29 +222,40 @@ function App() {
       console.log(outcome);
       switch (outcome) {
         case 2:
-          setPlayerScore(playerScore + 1);
+          attackMode
+            ? setPlayerScore(playerScore + 1)
+            : setRivalScore(rivalScore + 1);
           break;
         case 4:
-          setPlayerScore(playerScore + 2);
+          attackMode
+            ? setPlayerScore(playerScore + 2)
+            : setRivalScore(rivalScore + 2);
           break;
         case 0.5:
-          setRivalScore(rivalScore + 1);
+          attackMode
+            ? setRivalScore(rivalScore + 1)
+            : setPlayerScore(playerScore + 1);
           break;
         case 0.25:
-          setRivalScore(rivalScore + 2);
+          attackMode
+            ? setRivalScore(rivalScore + 2)
+            : setPlayerScore(playerScore + 2);
           break;
         case 0:
-          setRivalScore(rivalScore + 3);
+          attackMode
+            ? setRivalScore(rivalScore + 3)
+            : setPlayerScore(playerScore + 3);
           break;
         default:
         // no score change
       }
+      setBrockPhoto(attackMode ? brockDefend : brockAttack);
       setPlayerType("");
       setPlayerPkmnName("");
       setPlayerPkmnImg("");
       setRivalType("");
-      setRivalType1("");
-      setRivalType2("");
+      setDefenderType1("");
+      setDefenderType2("");
       setRivalPkmnName("");
       setRivalPkmnImg("");
       setP1("");
@@ -232,36 +264,63 @@ function App() {
       setOutcome(null);
       isItShinyPlayer();
       isItShinyRival();
+      setAttackMode(!attackMode);
       setGameplay(true);
     }
 
     //run gametext
     if (outcome !== null) {
+      if (playerShiny === true && rivalShiny === true) {
+        setBrockPhoto(brockShinyDouble);
+      }
+      if (playerShiny === true && rivalShiny === false) {
+        setBrockPhoto(brockShinyPlayer);
+      }
+      if (playerShiny === false && rivalShiny === true) {
+        setBrockPhoto(brockShinyRival);
+      }
       if (playerType === "electric" || playerType === "ice") {
         setP1(
-          `Your ${capitaliseName(
-            playerPkmnName
-          )} used an ${playerType}-type move!`
+          attackMode
+            ? `Your ${capitaliseName(
+                playerPkmnName
+              )} used an ${playerType}-type move!`
+            : `Your rival's ${capitaliseName(
+                rivalPkmnName
+              )} used an ${rivalType}-type move!`
         );
       } else {
         setP1(
-          `Your ${capitaliseName(
-            playerPkmnName
-          )} used a ${playerType}-type move!`
+          attackMode
+            ? `Your ${capitaliseName(
+                playerPkmnName
+              )} used a ${playerType}-type move!`
+            : `Your rival's ${capitaliseName(
+                rivalPkmnName
+              )} used a ${rivalType}-type move!`
         );
       }
+
       setTimeout(() => {
-        if (rivalType2 === null) {
+        if (defenderType2 === null) {
           setP2(
-            `Your rival's ${capitaliseName(
-              rivalPkmnName
-            )} is a ${rivalType1}-type Pokémon!`
+            attackMode
+              ? `Your rival's ${capitaliseName(
+                  rivalPkmnName
+                )} is a ${defenderType1}-type Pokémon!`
+              : `Your ${capitaliseName(
+                  playerPkmnName
+                )} is a ${defenderType1}-type Pokémon!`
           );
         } else {
           setP2(
-            `Your rival's ${capitaliseName(
-              rivalPkmnName
-            )} is a ${rivalType1}/${rivalType2}-type Pokémon!`
+            attackMode
+              ? `Your rival's ${capitaliseName(
+                  rivalPkmnName
+                )} is a ${defenderType1}/${defenderType2}-type Pokémon!`
+              : `Your ${capitaliseName(
+                  playerPkmnName
+                )} is a ${defenderType1}/${defenderType2}-type Pokémon!`
           );
         }
       }, 2000);
@@ -271,25 +330,41 @@ function App() {
           case 2:
           case 4:
             setP3(
-              `Your ${capitaliseName(
-                playerPkmnName
-              )}'s move is super effective!`
+              attackMode
+                ? `Your ${capitaliseName(
+                    playerPkmnName
+                  )}'s move is super effective!`
+                : `Your rival's ${capitaliseName(
+                    rivalPkmnName
+                  )}'s move is super effective!`
             );
+            // setBrockPhoto(attackMode ? brockWin : brockLoss);
             break;
           case 0.5:
           case 0.25:
             setP3(
-              `Your ${capitaliseName(
-                playerPkmnName
-              )}'s move is not very effective...`
+              attackMode
+                ? `Your ${capitaliseName(
+                    playerPkmnName
+                  )}'s move is not very effective...`
+                : `Your rival's ${capitaliseName(
+                    rivalPkmnName
+                  )}'s move is not very effective...`
             );
+            // setBrockPhoto(attackMode ? brockLoss : brockWin);
             break;
           case 1:
             setP3("Your Pokémon are evenly matched!");
             break;
           case 0:
             setP3(
-              `Your ${capitaliseName(playerPkmnName)}'s move had no effect...`
+              attackMode
+                ? `Your ${capitaliseName(
+                    playerPkmnName
+                  )}'s move had no effect...`
+                : `Your rival's ${capitaliseName(
+                    rivalPkmnName
+                  )}'s move had no effect...`
             );
             break;
 
@@ -303,12 +378,14 @@ function App() {
       }, 7000);
     }
   }, [
+    attackMode,
     outcome,
     playerPkmnName,
     rivalPkmnName,
     playerType,
-    rivalType1,
-    rivalType2,
+    rivalType,
+    defenderType1,
+    defenderType2,
     playerScore,
     rivalScore,
   ]);
@@ -316,6 +393,8 @@ function App() {
   return (
     <div id="app">
       Brock Paper Scissors
+      <BrockPhoto brockPhoto={brockPhoto} />
+      <AttackMode attackMode={attackMode} />
       <PlayerInstruction gamePlay={gamePlay} />
       <ButtonList onClick={handleClick} />
       <div id="gameplay-and-scores">
