@@ -4,13 +4,10 @@
 }
 
 #PkmnImg--player {
-  grid-area: 1 / 3 / 2 / 4;
+
+grid-area: 1 / 2 / 2 / 3;
 }
 
 #PkmnImg--rival {
-  grid-area: 1 / 5 / 2 / 6;
-}
-
-#gametext {
   grid-area: 1 / 4 / 2 / 5;
 }

@@ -10,7 +10,7 @@ export default function PkmnImgsGameText(props) {
         alt={props.playerPkmnName}
         src={props.playerPkmnImg}
       />
-      <GameText id="gametext" p1={props.p1} p2={props.p2} p3={props.p3} />
+      <GameText p1={props.p1} p2={props.p2} p3={props.p3} />
       <PkmnImg
         id="PkmnImg--rival"
         alt={props.rivalPkmnName}
