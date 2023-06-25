@@ -1,16 +1,75 @@
 #scores-and-shinies {
+  grid-area: 3 / 1 / 4 / 3;
   display: flex;
-  flex-direction: row;
   justify-content: space-around;
 }
 
-.shinies-and-text {
-  display: flex;
-  flex-direction: column;
+#scores-and-shinies--player,
+#scores-and-shinies--rival {
+  display: grid;
+  grid-template: 0.1fr 0.3fr 0.1fr / 0.45fr 0.1fr 0.45fr;
+  font-size: 11px;
+}
+#shiny-label--player,
+#shiny-score--player,
+#shiny-descripsh--player,
+#shiny-label--rival,
+#shiny-score--rival,
+#shiny-descripsh--rival {
+  color: goldenrod;
 }
 
-.scores-and-shinies {
+#score--player,
+#shiny-score--player,
+#score--rival,
+#shiny-score--rival {
+  border-style: solid;
+  width: 50px;
+  height: 50px;
+  align-self: center;
   display: flex;
-  flex-direction: row;
   align-items: center;
+  justify-content: center;
+  margin: auto;
+  font-size: 15px;
+}
+
+#score-label--player {
+  grid-area: 1 / 1 / 2 / 2;
+}
+#score--player {
+  grid-area: 2 / 1 / 3 / 2;
+}
+#shiny-label--player {
+  grid-area: 1 / 3 / 2 / 4;
+  color: goldenrod;
+}
+#shiny-score--player {
+  grid-area: 2 / 3 / 3 / 4;
+}
+#shiny-descripsh--player {
+  grid-area: 3 / 3 / 4 / 4;
+  color: goldenrod;
+}
+
+#shiny-label--rival {
+  grid-area: 1 / 1 / 2 / 2;
+  color: goldenrod;
+}
+#shiny-score--rival {
+  grid-area: 2 / 1 / 3 / 2;
+}
+#shiny-descripsh--rival {
+  grid-area: 3 / 1 / 4 / 1;
+  color: goldenrod;
+}
+#score-label--rival {
+  grid-area: 1 / 3 / 2 / 4;
+}
+#score--rival {
+  grid-area: 2 / 3 / 3 / 4;
+}
+
+.showshiny-false {
+  display: none;
 }

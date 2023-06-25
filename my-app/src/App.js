@@ -14,6 +14,7 @@ import brockDefend from "./images/brock-defend.png";
 import brockShinyRival from "./images/brock-shiny-rival.png";
 import brockShinyPlayer from "./images/brock-shiny-player.png";
 import brockShinyDouble from "./images/brock-shiny-double.png";
+import "./fonts/pokemon-hollow.ttf";
 
 function App() {
   //create states
@@ -38,12 +39,12 @@ function App() {
   const [playerShinyCount, setPlayerShinyCount] = useState(0);
   const [rivalShinyCount, setRivalShinyCount] = useState(0);
   const [attackMode, setAttackMode] = useState(true);
-
-  //functions to decide if shiny
+  const [showShinyCountPlayer, setShowShinyCountPlayer] = useState(false);
+  const [showShinyCountRival, setShowShinyCountRival] = useState(false);
 
   function isItShinyPlayer() {
     // const randomNo = Math.floor(Math.random() * 4096);
-     const randomNo = Math.floor(Math.random() * 100);
+    const randomNo = Math.floor(Math.random() * 100);
     // const randomNo = 0;
 
     if (randomNo === 0) {
@@ -55,8 +56,8 @@ function App() {
 
   function isItShinyRival() {
     // const randomNo = Math.floor(Math.random() * 4096);
-    const randomNo = Math.floor(Math.random() * 100);
-    // const randomNo = 0;
+    // const randomNo = Math.floor(Math.random() * 100);
+    const randomNo = 0;
     if (randomNo === 0) {
       setRivalShiny(true);
     } else {
@@ -123,7 +124,7 @@ function App() {
     } else {
       getDefenderType1and2(playerPkmnName);
     }
-  }, [rivalPkmnName]);
+  }, [attackMode, playerPkmnName, rivalPkmnName]);
 
   //get playerPkmnImg after name set
   useEffect(() => {
@@ -152,12 +153,15 @@ function App() {
         } else {
           setPlayerPkmnImg(data.sprites.front_shiny);
           setPlayerShinyCount((prevCount) => prevCount + 1);
+          if (playerShinyCount === false) {
+            setShowShinyCountPlayer(true);
+          }
         }
       }
     }
 
     getPlayerPkmnImg(playerPkmnName);
-  }, [playerPkmnName, playerShiny, playerType]);
+  }, [playerPkmnName, playerShiny, playerType, playerShinyCount]);
 
   //get rivalPkmnImg after name set
   useEffect(() => {
@@ -176,7 +180,7 @@ function App() {
           setRivalPkmnImg(data.sprites.front_default);
         }
       } else {
-        //pick shiny sprite if shiny and incread shiny count
+        //pick shiny sprite if shiny and increase shiny count
         //pick new pokemon if no sprite
         if (data.sprites.front_shiny === null) {
           const prevType = rivalType;
@@ -185,12 +189,15 @@ function App() {
         } else {
           setRivalPkmnImg(data.sprites.front_shiny);
           setRivalShinyCount((prevCount) => prevCount + 1);
+          if (rivalShinyCount === false) {
+            setShowShinyCountRival(true);
+          }
         }
       }
     }
 
     getRivalPkmnImg(rivalPkmnName);
-  }, [rivalPkmnName, rivalShiny, rivalType]);
+  }, [rivalPkmnName, rivalShiny, rivalType, rivalShinyCount]);
 
   //define outcomes
 
@@ -388,16 +395,23 @@ function App() {
     defenderType2,
     playerScore,
     rivalScore,
+    playerShiny,
+    rivalShiny,
   ]);
 
   return (
-    <div id="app">
-      Brock Paper Scissors
-      <BrockPhoto brockPhoto={brockPhoto} />
-      <AttackMode attackMode={attackMode} />
-      <PlayerInstruction gamePlay={gamePlay} />
-      <ButtonList onClick={handleClick} />
-      <div id="gameplay-and-scores">
+    <div id="app-border">
+      <div id="app">
+        <div id="top-left">
+          <h1 id="heading">Brock Paper Scissors</h1>
+          <BrockPhoto brockPhoto={brockPhoto} />
+          <AttackMode attackMode={attackMode} />
+        </div>
+        <div id="top-right">
+          <PlayerInstruction gamePlay={gamePlay} />
+          <ButtonList onClick={handleClick} />
+        </div>
+        {/* <div id="gameplay-and-scores"> */}
         <PkmnImgsGameText
           id="pkmnimgs-gametext"
           playerPkmnName={playerPkmnName}
@@ -414,7 +428,10 @@ function App() {
           rivalScore={rivalScore}
           playerShinyCount={playerShinyCount}
           rivalShinyCount={rivalShinyCount}
+          showShinyCountPlayer={showShinyCountPlayer}
+          showShinyCountRival={showShinyCountRival}
         />
+        {/* </div> */}
       </div>
     </div>
   );

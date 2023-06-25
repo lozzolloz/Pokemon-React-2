@@ -1,25 +1,3 @@
-/* define type colors */
-:root {
-  --grass-color: #78c850;
-  --fire-color: #f08030;
-  --water-color: #0645ad;
-  --electric-color: #f8d030;
-  --ice-color: #98d8d8;
-  --fighting-color: #c03028;
-  --poison-color: #a040a0;
-  --ground-color: #e0c068;
-  --flying-color: #a890f0;
-  --psychic-color: #f85888;
-  --bug-color: #a8b820;
-  --rock-color: #b8a038;
-  --ghost-color: #705898;
-  --dragon-color: #7038f8;
-  --dark-color: #705848;
-  --steel-color: #b8b8d0;
-  --fairy-color: #ee99ac;
-  --normal-color: #a8a878;
-}
-
 /* set button hover background color to type */
 
 #grass:hover {
@@ -133,13 +111,13 @@
 }
 
 button {
-  font-family: Arial, sans-serif;
+  font-family: gameboy;
   text-align: center;
-  margin: 10px;
+  margin: 5px;
   padding: 10px;
-  font-size: 14px;
-  width: 85px;
-  height: 35px;
+  font-size: 8px;
+  width: 76px;
+  height: 33px;
   display: flex;
   align-items: center;
   justify-content: center;
