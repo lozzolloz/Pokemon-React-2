@@ -17,3 +17,18 @@
   grid-area: 1 / 4 / 2 / 5;
 
 }
+
+@media (max-width: 838px) {
+  #pkmnimgs-gametext {
+    height: 140px;
+    display: flex;
+    align-items: space-between;
+    justify-content: space-between;
+ gap: 0px;
+ margin-top: 10px
+  }
+
+   
+  
+  }
+  

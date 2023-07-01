@@ -71,5 +71,19 @@
 }
 
 .showshiny-false {
-  display: none;
+  opacity: 0;
 }
+
+.showshiny-true {
+  opacity: 1;
+}
+
+@media (max-width: 838px) {
+
+
+
+#scores-and-shinies p {
+  font-size: 8px;}
+
+}
+

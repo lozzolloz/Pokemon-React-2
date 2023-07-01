@@ -126,3 +126,20 @@ button {
 button:hover {
   color: white;
 }
+
+@media (max-width: 838px) {
+
+  button {
+    font-family: gameboy;
+    text-align: center;
+    margin: 4px;
+    padding: 5px;
+    font-size: 6px;
+    width: 55px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+}

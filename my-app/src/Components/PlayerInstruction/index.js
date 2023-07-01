@@ -1,3 +1,5 @@
+import "./style.css";
+
 export default function PlayerInstruction(props) {
   let instructionText;
 
@@ -6,5 +8,5 @@ export default function PlayerInstruction(props) {
   } else {
     instructionText = "...";
   }
-  return <p>{instructionText}</p>;
+  return <p id="instruction-text">{instructionText}</p>;
 }

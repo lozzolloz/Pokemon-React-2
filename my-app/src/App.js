@@ -56,8 +56,8 @@ function App() {
 
   function isItShinyRival() {
     // const randomNo = Math.floor(Math.random() * 4096);
-    // const randomNo = Math.floor(Math.random() * 100);
-    const randomNo = 0;
+    const randomNo = Math.floor(Math.random() * 100);
+    // const randomNo = 0;
     if (randomNo === 0) {
       setRivalShiny(true);
     } else {
@@ -136,32 +136,30 @@ function App() {
       //pick normal sprite if not shiny
       if (!playerShiny) {
         //pick new pokemon if no sprite
-        if (data.sprites.front_default === null) {
+        if (!data.sprites || !data.sprites.back_default) {
           const prevType = playerType;
           setPlayerType("");
           setPlayerType(prevType);
         } else {
-          setPlayerPkmnImg(data.sprites.front_default);
+          setPlayerPkmnImg(data.sprites.back_default);
         }
       } else {
         //pick shiny sprite if shiny and incread shiny count
         //pick new pokemon if no sprite
-        if (data.sprites.front_shiny === null) {
+        if (!data.sprites || !data.sprites.back_shiny) {
           const prevType = playerType;
           setPlayerType("");
           setPlayerType(prevType);
         } else {
-          setPlayerPkmnImg(data.sprites.front_shiny);
+          setPlayerPkmnImg(data.sprites.back_shiny);
           setPlayerShinyCount((prevCount) => prevCount + 1);
-          if (playerShinyCount === false) {
-            setShowShinyCountPlayer(true);
-          }
+          setShowShinyCountPlayer(true);
         }
       }
     }
 
     getPlayerPkmnImg(playerPkmnName);
-  }, [playerPkmnName, playerShiny, playerType, playerShinyCount]);
+  }, [playerPkmnName, playerShiny, playerType]);
 
   //get rivalPkmnImg after name set
   useEffect(() => {
@@ -172,7 +170,7 @@ function App() {
       let data = await response.json();
       if (!rivalShiny) {
         //pick new pokemon if no sprite
-        if (data.sprites.front_default === null) {
+        if (!data.sprites || !data.sprites.front_default === null) {
           const prevType = rivalType;
           setRivalType("");
           setRivalType(prevType);
@@ -182,22 +180,20 @@ function App() {
       } else {
         //pick shiny sprite if shiny and increase shiny count
         //pick new pokemon if no sprite
-        if (data.sprites.front_shiny === null) {
+        if (!data.sprites || !data.sprites.front_shiny) {
           const prevType = rivalType;
           setRivalType("");
           setRivalType(prevType);
         } else {
           setRivalPkmnImg(data.sprites.front_shiny);
           setRivalShinyCount((prevCount) => prevCount + 1);
-          if (rivalShinyCount === false) {
-            setShowShinyCountRival(true);
-          }
+          setShowShinyCountRival(true);
         }
       }
     }
 
     getRivalPkmnImg(rivalPkmnName);
-  }, [rivalPkmnName, rivalShiny, rivalType, rivalShinyCount]);
+  }, [rivalPkmnName, rivalShiny, rivalType]);
 
   //define outcomes
 
@@ -286,27 +282,25 @@ function App() {
       if (playerShiny === false && rivalShiny === true) {
         setBrockPhoto(brockShinyRival);
       }
-      if (playerType === "electric" || playerType === "ice") {
-        setP1(
-          attackMode
-            ? `Your ${capitaliseName(
-                playerPkmnName
-              )} used an ${playerType}-type move!`
-            : `Your rival's ${capitaliseName(
-                rivalPkmnName
-              )} used an ${rivalType}-type move!`
-        );
-      } else {
-        setP1(
-          attackMode
-            ? `Your ${capitaliseName(
-                playerPkmnName
-              )} used a ${playerType}-type move!`
-            : `Your rival's ${capitaliseName(
-                rivalPkmnName
-              )} used a ${rivalType}-type move!`
-        );
-      }
+
+if(attackMode){
+  setP1(
+  (playerType === "electric" || playerType === "ice") ? `Your ${capitaliseName(
+    playerPkmnName
+  )} used an ${playerType}-type move!` : `Your ${capitaliseName(
+    playerPkmnName
+  )} used a ${playerType}-type move!`)
+
+}
+if(!attackMode){
+  setP1(
+    (rivalType === "electric" || rivalType === "ice") ? `Your rival's ${capitaliseName(
+      rivalPkmnName
+    )} used an ${rivalType}-type move!` : `Your rival's ${capitaliseName(
+      rivalPkmnName
+    )} used a ${rivalType}-type move!`)
+
+}
 
       setTimeout(() => {
         if (defenderType2 === null) {
@@ -402,6 +396,7 @@ function App() {
   return (
     <div id="app-border">
       <div id="app">
+      <div id="top-row">
         <div id="top-left">
           <h1 id="heading">Brock Paper Scissors</h1>
           <BrockPhoto brockPhoto={brockPhoto} />
@@ -411,7 +406,7 @@ function App() {
           <PlayerInstruction gamePlay={gamePlay} />
           <ButtonList onClick={handleClick} />
         </div>
-        {/* <div id="gameplay-and-scores"> */}
+        </div>
         <PkmnImgsGameText
           id="pkmnimgs-gametext"
           playerPkmnName={playerPkmnName}
@@ -431,7 +426,6 @@ function App() {
           showShinyCountPlayer={showShinyCountPlayer}
           showShinyCountRival={showShinyCountRival}
         />
-        {/* </div> */}
       </div>
     </div>
   );

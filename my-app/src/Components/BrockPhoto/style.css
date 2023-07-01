@@ -1,3 +1,9 @@
 #brockPhoto {
     width: 330px;
 }
+
+@media (max-width: 838px) {
+    #brockPhoto {
+        width: 280px;
+    }
+}

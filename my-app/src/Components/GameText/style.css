@@ -3,3 +3,12 @@
   font-size: 11px;
   line-height: 1.7;
 }
+
+@media (max-width: 838px) {
+  #gametext {
+   
+    font-size: 8px;
+    line-height: 1.7;
+  }
+  
+}
