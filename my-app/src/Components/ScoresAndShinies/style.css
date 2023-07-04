@@ -83,4 +83,19 @@
   #scores-and-shinies p {
     font-size: 8px;
   }
+
+  #score--player,
+  #shiny-score--player,
+  #score--rival,
+  #shiny-score--rival {
+    border-style: solid;
+    width: 35px;
+    height: 35px;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    font-size: 8px;
+  }
 }
