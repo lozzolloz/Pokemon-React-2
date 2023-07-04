@@ -84,7 +84,7 @@ function App() {
         `https://pokeapi.co/api/v2/type/${type}?limit=1`
       );
       let data = await response.json();
-      let randomNo = Math.floor(Math.random() * data.pokemon.length);
+      let randomNo = Math.floor(Math.random() * (data.pokemon.length - 8));
       setPlayerPkmnName(data.pokemon[randomNo].pokemon.name);
     }
     getPlayerPkmnName(playerType);
@@ -98,7 +98,7 @@ function App() {
       );
       let data = await response.json();
 
-      let randomNo = Math.floor(Math.random() * data.pokemon.length);
+      let randomNo = Math.floor(Math.random() * (data.pokemon.length - 8));
 
       setRivalPkmnName(data.pokemon[randomNo].pokemon.name);
       // rivalPkmnCaps = capitaliseName(rivalPkmn);
@@ -393,7 +393,11 @@ function App() {
           </div>
           <div id="top-right">
             <PlayerInstruction gamePlay={gamePlay} />
-            <ButtonList onClick={handleClick} gamePlay={gamePlay} playerType={playerType} />
+            <ButtonList
+              onClick={handleClick}
+              gamePlay={gamePlay}
+              playerType={playerType}
+            />
           </div>
         </div>
 
