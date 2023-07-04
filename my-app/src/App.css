@@ -51,7 +51,7 @@ body {
   grid-area: 1 / 2 / 2 / 3;
   text-align: center;
   display: grid;
-  
+
   grid-template: 1fr 0.6fr 0.4fr / 1fr 1fr;
   align-items: center;
   background-color: #f8f8f8;
@@ -103,6 +103,7 @@ body {
     background-image: url("./images/background-cropped2.jpeg");
     background-repeat: repeat-x;
     background-size: auto 100%;
+    background-position: center top -65px;
     height: 100%;
     justify-content: center;
   }
@@ -127,9 +128,8 @@ body {
   }
 }
 
-
 @media (min-width: 1290px) {
- #app-border{
-  grid-template: 1fr / 1fr 2.2fr 1fr;
- }
+  #app-border {
+    grid-template: 1fr / 1fr 2.2fr 1fr;
+  }
 }
