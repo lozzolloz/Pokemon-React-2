@@ -2,57 +2,75 @@
 
 #grass:hover {
   background-color: var(--grass-color);
+  color: white;
 }
 #fire:hover {
   background-color: var(--fire-color);
+  color: white;
 }
 #water:hover {
   background-color: var(--water-color);
+  color: white;
 }
 #electric:hover {
   background-color: var(--electric-color);
+  color: white;
 }
 #ice:hover {
   background-color: var(--ice-color);
+  color: white;
 }
 #fighting:hover {
   background-color: var(--fighting-color);
+  color: white;
 }
 #poison:hover {
   background-color: var(--poison-color);
+  color: white;
 }
 #ground:hover {
   background-color: var(--ground-color);
+  color: white;
 }
 #flying:hover {
   background-color: var(--flying-color);
+  color: white;
 }
 #psychic:hover {
   background-color: var(--psychic-color);
+  color: white;
 }
 #bug:hover {
   background-color: var(--bug-color);
+  color: white;
 }
 #rock:hover {
   background-color: var(--rock-color);
+  color: white;
 }
 #ghost:hover {
   background-color: var(--ghost-color);
+  color: white;
 }
 #dragon:hover {
   background-color: var(--dragon-color);
+  color: white;
 }
 #dark:hover {
   background-color: var(--dark-color);
+  color: white;
 }
 #steel:hover {
   background-color: var(--steel-color);
+  color: white;
 }
 #fairy:hover {
   background-color: var(--fairy-color);
+  color: white;
 }
 #normal:hover {
   background-color: var(--normal-color);
+  color: white;
 }
 
 .grass {
@@ -121,10 +139,6 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-button:hover {
-  color: white;
 }
 
 @media (max-width: 838px) {

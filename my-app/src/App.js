@@ -393,7 +393,7 @@ function App() {
           </div>
           <div id="top-right">
             <PlayerInstruction gamePlay={gamePlay} />
-            <ButtonList onClick={handleClick} />
+            <ButtonList onClick={handleClick} gamePlay={gamePlay} playerType={playerType} />
           </div>
         </div>
 

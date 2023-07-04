@@ -1,5 +1,5 @@
 import TypeButton from "../TypeButton";
-import './style.css'
+import "./style.css";
 
 export default function ButtonList(props) {
   function handleClick(type) {
@@ -7,8 +7,12 @@ export default function ButtonList(props) {
   }
 
   return (
-    <div id='buttonList'>
-      <TypeButton type="normal" onClick={() => handleClick("normal")} />
+    <div id="buttonList">
+      <TypeButton
+        type="normal"
+        onClick={() => handleClick("normal")}
+        gamePlay={props.gamePlay}
+      />
       <TypeButton type="fire" onClick={() => handleClick("fire")} />
       <TypeButton type="water" onClick={() => handleClick("water")} />
       <TypeButton type="electric" onClick={() => handleClick("electric")} />
