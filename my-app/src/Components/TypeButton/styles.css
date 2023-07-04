@@ -141,7 +141,7 @@ button {
   justify-content: center;
 }
 
-@media (max-width: 838px) {
+@media (max-width: 423px) {
   button {
     font-family: gameboy;
     text-align: center;
@@ -150,6 +150,21 @@ button {
     font-size: 4.5px;
     width: 45px;
     height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 423px) and (max-width: 838px) {
+  button {
+    font-family: gameboy;
+    text-align: center;
+    margin: 5px;
+    padding: 10px;
+    font-size: 7px;
+    width: 72px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
