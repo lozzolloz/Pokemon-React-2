@@ -9,6 +9,7 @@ export default function capitaliseName(input) {
     case "sirfetchd":
       return "Sirfetch'd";
     case "mr-mime":
+    case "mr-mime-galar":
       return "Mr. Mime";
     case "mime-jr":
       return "Mime Jr.";
