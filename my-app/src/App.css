@@ -110,6 +110,10 @@ body {
     background-color: #f8f8f8;
   }
 
+  #heading {
+    font-size: 22px;
+  }
+
   #top-row {
     display: flex;
     flex-direction: column;
