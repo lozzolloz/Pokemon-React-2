@@ -83,11 +83,8 @@ function App() {
         `https://pokeapi.co/api/v2/type/${type}?limit=1`
       );
       let data = await response.json();
-      // console.log(data);
-      const randomNo = Math.floor(Math.random() * data.pokemon.length);
-      // console.log(randomNo);
+      let randomNo = Math.floor(Math.random() * data.pokemon.length);
       setPlayerPkmnName(data.pokemon[randomNo].pokemon.name);
-      // playerPkmnCaps = capitaliseName(playerPkmn);
     }
     getPlayerPkmnName(playerType);
   }, [playerType]);
@@ -99,9 +96,9 @@ function App() {
         `https://pokeapi.co/api/v2/type/${type}?limit=1`
       );
       let data = await response.json();
-      // console.log(data);
-      const randomNo = Math.floor(Math.random() * data.pokemon.length);
-      // console.log(randomNo);
+
+      let randomNo = Math.floor(Math.random() * data.pokemon.length);
+
       setRivalPkmnName(data.pokemon[randomNo].pokemon.name);
       // rivalPkmnCaps = capitaliseName(rivalPkmn);
     }
@@ -133,28 +130,16 @@ function App() {
         `https://pokeapi.co/api/v2/pokemon/${pkmnName}`
       );
       let data = await response.json();
+      console.log(data);
       //pick normal sprite if not shiny
       if (!playerShiny) {
-        //pick new pokemon if no sprite
-        if (!data.sprites || !data.sprites.back_default) {
-          const prevType = playerType;
-          setPlayerType("");
-          setPlayerType(prevType);
-        } else {
-          setPlayerPkmnImg(data.sprites.back_default);
-        }
+        setPlayerPkmnImg(data.sprites.front_default);
       } else {
         //pick shiny sprite if shiny and incread shiny count
-        //pick new pokemon if no sprite
-        if (!data.sprites || !data.sprites.back_shiny) {
-          const prevType = playerType;
-          setPlayerType("");
-          setPlayerType(prevType);
-        } else {
-          setPlayerPkmnImg(data.sprites.back_shiny);
-          setPlayerShinyCount((prevCount) => prevCount + 1);
-          setShowShinyCountPlayer(true);
-        }
+
+        setPlayerPkmnImg(data.sprites.front_shiny);
+        setPlayerShinyCount((prevCount) => prevCount + 1);
+        setShowShinyCountPlayer(true);
       }
     }
 
@@ -169,26 +154,13 @@ function App() {
       );
       let data = await response.json();
       if (!rivalShiny) {
-        //pick new pokemon if no sprite
-        if (!data.sprites || !data.sprites.front_default === null) {
-          const prevType = rivalType;
-          setRivalType("");
-          setRivalType(prevType);
-        } else {
-          setRivalPkmnImg(data.sprites.front_default);
-        }
+        setRivalPkmnImg(data.sprites.front_default);
       } else {
         //pick shiny sprite if shiny and increase shiny count
-        //pick new pokemon if no sprite
-        if (!data.sprites || !data.sprites.front_shiny) {
-          const prevType = rivalType;
-          setRivalType("");
-          setRivalType(prevType);
-        } else {
-          setRivalPkmnImg(data.sprites.front_shiny);
-          setRivalShinyCount((prevCount) => prevCount + 1);
-          setShowShinyCountRival(true);
-        }
+
+        setRivalPkmnImg(data.sprites.front_shiny);
+        setRivalShinyCount((prevCount) => prevCount + 1);
+        setShowShinyCountRival(true);
       }
     }
 
@@ -222,7 +194,6 @@ function App() {
     //reset function
     function resetGame() {
       //updating scores
-      console.log(outcome);
       switch (outcome) {
         case 2:
           attackMode
@@ -283,48 +254,61 @@ function App() {
         setBrockPhoto(brockShinyRival);
       }
 
-if(attackMode){
-  setP1(
-  (playerType === "electric" || playerType === "ice") ? `Your ${capitaliseName(
-    playerPkmnName
-  )} used an ${playerType}-type move!` : `Your ${capitaliseName(
-    playerPkmnName
-  )} used a ${playerType}-type move!`)
-
-}
-if(!attackMode){
-  setP1(
-    (rivalType === "electric" || rivalType === "ice") ? `Your rival's ${capitaliseName(
-      rivalPkmnName
-    )} used an ${rivalType}-type move!` : `Your rival's ${capitaliseName(
-      rivalPkmnName
-    )} used a ${rivalType}-type move!`)
-
-}
+      if (attackMode) {
+        setP1(
+          playerType === "electric" || playerType === "ice"
+            ? `Your ${capitaliseName(
+                playerPkmnName
+              )} used an ${playerType}-type move!`
+            : `Your ${capitaliseName(
+                playerPkmnName
+              )} used a ${playerType}-type move!`
+        );
+      }
+      if (!attackMode) {
+        setP1(
+          rivalType === "electric" || rivalType === "ice"
+            ? `Your rival's ${capitaliseName(
+                rivalPkmnName
+              )} used an ${rivalType}-type move!`
+            : `Your rival's ${capitaliseName(
+                rivalPkmnName
+              )} used a ${rivalType}-type move!`
+        );
+      }
 
       setTimeout(() => {
         if (defenderType2 === null) {
           setP2(
             attackMode
-              ? `Your rival's ${capitaliseName(
-                  rivalPkmnName
-                )} is a ${defenderType1}-type Pokémon!`
-              : `Your ${capitaliseName(
-                  playerPkmnName
-                )} is a ${defenderType1}-type Pokémon!`
+              ? `Your rival's ${capitaliseName(rivalPkmnName)} is ${
+                  defenderType1 === "electric" || defenderType1 === "ice"
+                    ? "an "
+                    : "a "
+                }${defenderType1}-type Pokémon!`
+              : `Your ${capitaliseName(playerPkmnName)} is ${
+                  defenderType1 === "electric" || defenderType1 === "ice"
+                    ? "an "
+                    : "a "
+                }${defenderType1}-type Pokémon!`
           );
         } else {
           setP2(
             attackMode
-              ? `Your rival's ${capitaliseName(
-                  rivalPkmnName
-                )} is a ${defenderType1}/${defenderType2}-type Pokémon!`
-              : `Your ${capitaliseName(
-                  playerPkmnName
-                )} is a ${defenderType1}/${defenderType2}-type Pokémon!`
+              ? `Your rival's ${capitaliseName(rivalPkmnName)} is ${
+                  defenderType1 === "electric" || defenderType1 === "ice"
+                    ? "an "
+                    : "a "
+                }${defenderType1}/${defenderType2}-type Pokémon!`
+              : `Your ${capitaliseName(playerPkmnName)} is ${
+                  defenderType1 === "electric" || defenderType1 === "ice"
+                    ? "an "
+                    : "a "
+                }${defenderType1}/${defenderType2}-type Pokémon!`
           );
         }
       }, 2000);
+
       setTimeout(() => {
         //update gametext dependent on outcome
         switch (outcome) {
@@ -393,19 +377,23 @@ if(!attackMode){
     rivalShiny,
   ]);
 
+  useEffect(() => {
+    console.log(playerType);
+  }, [playerType]);
+
   return (
     <div id="app-border">
       <div id="app">
-      <div id="top-row">
-        <div id="top-left">
-          <h1 id="heading">Brock Paper Scissors</h1>
-          <BrockPhoto brockPhoto={brockPhoto} />
-          <AttackMode attackMode={attackMode} />
-        </div>
-        <div id="top-right">
-          <PlayerInstruction gamePlay={gamePlay} />
-          <ButtonList onClick={handleClick} />
-        </div>
+        <div id="top-row">
+          <div id="top-left">
+            <h1 id="heading">Brock Paper Scissors</h1>
+            <BrockPhoto brockPhoto={brockPhoto} />
+            <AttackMode attackMode={attackMode} />
+          </div>
+          <div id="top-right">
+            <PlayerInstruction gamePlay={gamePlay} />
+            <ButtonList onClick={handleClick} />
+          </div>
         </div>
         <PkmnImgsGameText
           id="pkmnimgs-gametext"

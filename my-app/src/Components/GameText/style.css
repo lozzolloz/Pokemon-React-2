@@ -6,9 +6,8 @@
 
 @media (max-width: 838px) {
   #gametext {
-   
+    grid-area: 1 / 2 / 2 / 3;
     font-size: 8px;
     line-height: 1.7;
   }
-  
 }
