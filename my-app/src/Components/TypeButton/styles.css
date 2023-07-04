@@ -156,7 +156,7 @@ button {
   }
 }
 
-@media (min-width: 423px) and (max-width: 838px) {
+@media (min-width: 423px) and (max-width: 818px) {
   button {
     font-family: gameboy;
     text-align: center;
