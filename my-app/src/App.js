@@ -14,6 +14,7 @@ import brockDefend from "./images/brock-defend.png";
 import brockShinyRival from "./images/brock-shiny-rival.png";
 import brockShinyPlayer from "./images/brock-shiny-player.png";
 import brockShinyDouble from "./images/brock-shiny-double.png";
+import pokeball from "./images/pokeball.png";
 import "./fonts/pokemon-hollow.ttf";
 
 function App() {
@@ -22,12 +23,12 @@ function App() {
   const [gamePlay, setGameplay] = useState(true);
   const [playerType, setPlayerType] = useState("");
   const [playerPkmnName, setPlayerPkmnName] = useState("");
-  const [playerPkmnImg, setPlayerPkmnImg] = useState("");
+  const [playerPkmnImg, setPlayerPkmnImg] = useState(pokeball);
   const [rivalType, setRivalType] = useState("");
   const [defenderType1, setDefenderType1] = useState("");
   const [defenderType2, setDefenderType2] = useState("");
   const [rivalPkmnName, setRivalPkmnName] = useState("");
-  const [rivalPkmnImg, setRivalPkmnImg] = useState("");
+  const [rivalPkmnImg, setRivalPkmnImg] = useState(pokeball);
   const [outcome, setOutcome] = useState(null);
   const [p1, setP1] = useState("");
   const [p2, setP2] = useState("");
@@ -226,12 +227,10 @@ function App() {
       setBrockPhoto(attackMode ? brockDefend : brockAttack);
       setPlayerType("");
       setPlayerPkmnName("");
-      setPlayerPkmnImg("");
       setRivalType("");
       setDefenderType1("");
       setDefenderType2("");
       setRivalPkmnName("");
-      setRivalPkmnImg("");
       setP1("");
       setP2("");
       setP3("");
@@ -239,6 +238,8 @@ function App() {
       isItShinyPlayer();
       isItShinyRival();
       setAttackMode(!attackMode);
+      setPlayerPkmnImg(pokeball);
+      setRivalPkmnImg(pokeball);
       setGameplay(true);
     }
 
@@ -395,6 +396,7 @@ function App() {
             <ButtonList onClick={handleClick} />
           </div>
         </div>
+
         <PkmnImgsGameText
           id="pkmnimgs-gametext"
           playerPkmnName={playerPkmnName}

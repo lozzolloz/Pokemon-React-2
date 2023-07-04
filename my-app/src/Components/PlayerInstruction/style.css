@@ -1,5 +1,6 @@
 @media (max-width: 838px) {
   #instruction-text {
-    font-size: 10px;
+    font-size: 8px;
+    margin-top: 10px;
   }
 }
