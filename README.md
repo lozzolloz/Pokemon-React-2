@@ -18,12 +18,12 @@ When you click a `type button`, the entire Pokédex is scoured to select a Poké
 
 If a defending Pokémon has two types, this is taken into account when calculating effectiveness. Different scores are awarded at the end of each round depending on the final effectiveness modifier.
 
-4x effectiveness: attacker +2  
-2x effectiveness: attacker +1  
-1x effectiveness: +0  
-1/2x effectiveness: defender +1  
-1/4x effectiveness: defender +2  
-0x effectiveness: defender +3  
+4x effectiveness: `attacker +2`  
+2x effectiveness: `attacker +1`  
+1x effectiveness: `+0`  
+1/2x effectiveness: `defender +1`  
+1/4x effectiveness: `defender +2`  
+0x effectiveness: `defender +3`  
 
 ### Attack and defend mode
 
