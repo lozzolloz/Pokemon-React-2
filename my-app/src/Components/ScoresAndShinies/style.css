@@ -3,6 +3,7 @@
   display: flex;
   justify-items: space-around;
   align-items: center;
+  gap: 15px;
 }
 
 #scores-and-shinies--player,

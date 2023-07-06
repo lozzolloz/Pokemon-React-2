@@ -44,7 +44,6 @@ function App() {
   const [showShinyCountRival, setShowShinyCountRival] = useState(false);
 
   function isItShinyPlayer() {
-    // const randomNo = Math.floor(Math.random() * 4096);
     const randomNo = Math.floor(Math.random() * 100);
     // const randomNo = 0;
 
@@ -56,7 +55,6 @@ function App() {
   }
 
   function isItShinyRival() {
-    // const randomNo = Math.floor(Math.random() * 4096);
     const randomNo = Math.floor(Math.random() * 100);
     // const randomNo = 0;
     if (randomNo === 0) {

@@ -1,70 +1,48 @@
-# Getting Started with Create React App
+# Brock-Paper-Scissors
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+One of the first things I learned when coding was the classic rock-paper-scissors game. When learning about APIs and finding [PokéAPI](https://pokeapi.co/), I had the idea to combine them and expand the game to include all 18 Pokémon types. 
 
-## Available Scripts
+I initially coded the game in vanilla Javascript in one big file. You can see where I got up to with that in the `old data` folder. Then when I learned about React and component-based architecture, I rebuilt the game that way to practise my React skills.
 
-In the project directory, you can run:
+Now I have even more coding experience, and know that having something in a React hook doesn't necessarily mean it's better, if I was to rebuild the site again, it would probably be somewhere in-between the two versions.  
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### All generations
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+When you click a `type button`, the entire Pokédex is scoured to select a Pokémon of that type for you at random. Your CPU rival will also select a type and then a Pokémon at random.
 
-### `npm test`
+### Multi-type effectiveness calculation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+If a defending Pokémon has two types, this is taken into account when calculating effectiveness. Different scores are awarded at the end of each round depending on the final effectiveness modifier.
 
-### `npm run build`
+`4x effectiveness: attacker +2`
+`2x effectiveness: attacker +1`
+`1x effectiveness: +0`
+`1/2x effectiveness: defender +1`
+`1/4x effectiveness: defender +2`
+`0x effectiveness: defender +3` 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Attack and defend mode
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Each round, the player and computer alternate `attack mode` and `defend mode`, mimicking the turn-based play of the Pokémon games. The unique `Brock photo`in each mode gives a handy reminder at a glance.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Shiny Pokémon
 
-### `npm run eject`
+Pokémon have a 1 in 100 chance of being `shiny`. This can happen for player or rival (or 1 in 10000 times, for both at once). This renders a shiny Pokémon sprite, and you will also see a special `Brock photo`. When player or rival gets their first shiny Pokémon, their `shiny counter` will appear next to their `score counter`.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Pokémon name rendering
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Pokémon names in the API are given uncapitalised, with hypens instead of spaces and with no special characters. The `capitaliseName` function aims to convert these properly, so that `ditto`, `tapu-lele` and `mr-mime` become `Ditto`, `Tapu Lele` and `Mr. Mime`. Additional form descriptors are removed, so that `gyarados-mega`, `lapras-gmax` and `mr-mime-galar` become `Gyarados`, `Lapras` and `Mr. Mime`.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Responsiveness
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The screen layout is dynamic and will change at certain aspect ratios, appearing different on desktop and mobile.
 
-## Learn More
+## Known issues
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Missing sprites
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Very occasionally, a Pokémon sprite will not render for a selected Pokémon. This is an issue with the API, with the relevant sprite not being included for that Pokémon.
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+I have mitigated this by taking the last 8 Pokémon of each type out of circulation, as it tends to be the newer, later Pokémon that have this issue. I would like to add some logic so that Pokémon selection runs again if the sprite is `null` to fix this fully.
