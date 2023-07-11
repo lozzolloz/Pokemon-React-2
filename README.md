@@ -1,6 +1,8 @@
 # Brock-Paper-Scissors
 
-One of the first things I learned when coding was the classic rock-paper-scissors game. When learning about APIs and finding [PokéAPI](https://pokeapi.co/), I had the idea to combine them and expand the game to include all 18 Pokémon types. 
+One of the first things I made when learning to code was the classic rock-paper-scissors game.
+
+When learning about APIs and finding [PokéAPI](https://pokeapi.co/), I had the idea to combine them and expand the game to include all 18 Pokémon types. 
 
 I initially coded the game in vanilla Javascript in one big file. You can see where I got up to with that in the `old data` folder. Then when I learned about React and component-based architecture, I rebuilt the game that way to practise my React skills.
 
@@ -16,12 +18,12 @@ When you click a `type button`, the entire Pokédex is scoured to select a Poké
 
 If a defending Pokémon has two types, this is taken into account when calculating effectiveness. Different scores are awarded at the end of each round depending on the final effectiveness modifier.
 
-`4x effectiveness: attacker +2`
-`2x effectiveness: attacker +1`
-`1x effectiveness: +0`
-`1/2x effectiveness: defender +1`
-`1/4x effectiveness: defender +2`
-`0x effectiveness: defender +3` 
+4x effectiveness: `attacker +2`  
+2x effectiveness: `attacker +1`  
+1x effectiveness: `+0`  
+1/2x effectiveness: `defender +1`  
+1/4x effectiveness: `defender +2`  
+0x effectiveness: `defender +3`  
 
 ### Attack and defend mode
 
