@@ -4,9 +4,7 @@ One of the first things I made when learning to code was the classic rock-paper-
 
 When learning about APIs and finding [PokéAPI](https://pokeapi.co/), I had the idea to combine them and expand the game to include all 18 Pokémon types. 
 
-I initially coded the game in vanilla Javascript in one big file. You can see where I got up to with that in the `old data` folder. Then when I learned about React and component-based architecture, I rebuilt the game that way to practise my React skills.
-
-Now I have even more coding experience, and know that having something in a React hook doesn't necessarily mean it's better, if I was to rebuild the site again, it would probably be somewhere in-between the two versions.  
+I initially coded the game in vanilla Javascript in one big file. You can see where I got up to with that in the `old data` folder. Then when I learned about React and component-based architecture, I rebuilt the game that way to practise my React skills. 
 
 ## Features
 
@@ -41,10 +39,3 @@ Pokémon names in the API are given uncapitalised, with hypens instead of spaces
 
 The screen layout is dynamic and will change at certain aspect ratios, appearing different on desktop and mobile.
 
-## Known issues
-
-### Missing sprites
-
-Very occasionally, a Pokémon sprite will not render for a selected Pokémon. This is an issue with the API, with the relevant sprite not being included for that Pokémon.
-
-I have mitigated this by taking the last 8 Pokémon of each type out of circulation, as it tends to be the newer, later Pokémon that have this issue. I would like to add some logic so that Pokémon selection runs again if the sprite is `null` to fix this fully.
