@@ -36,6 +36,7 @@ function App() {
   const [attackMode, setAttackMode] = useState(true);
   const [showShinyCountPlayer, setShowShinyCountPlayer] = useState(false);
   const [showShinyCountRival, setShowShinyCountRival] = useState(false);
+  const [playerTypeSelected, setPlayerTypeSelected] = useState("");
   const roundDataBlank = {
     pkmnNamePlayer: "",
     pkmnType1Player: "",
@@ -101,6 +102,7 @@ function App() {
   }
 
   function getOutcome(
+    playerTypeSelected,
     pkmnType1Player,
     pkmnType2Player,
     pkmnType1Rival,
@@ -110,8 +112,8 @@ function App() {
     attackMode
       ? (outcome =
           1 *
-          effectivenessCalculation(pkmnType1Player, pkmnType1Rival) *
-          effectivenessCalculation(pkmnType1Player, pkmnType2Rival))
+          effectivenessCalculation(playerTypeSelected, pkmnType1Rival) *
+          effectivenessCalculation(playerTypeSelected, pkmnType2Rival))
       : (outcome =
           1 *
           effectivenessCalculation(pkmnType1Rival, pkmnType1Player) *
@@ -131,6 +133,7 @@ function App() {
       getPkmnRival(),
     ]);
     const outcome = getOutcome(
+      playerTypeSelected,
       playerPkmn.pkmnType1,
       playerPkmn.pkmnType2,
       rivalPkmn.pkmnType1,
@@ -185,6 +188,7 @@ function App() {
     setP1("");
     setP2("");
     setP3("");
+    setPlayerTypeSelected("");
     isItShinyPlayer();
     isItShinyRival();
     setAttackMode(!attackMode);
@@ -207,13 +211,13 @@ function App() {
 
     if (attackMode) {
       setP1(
-        pkmnType1Player === "electric" || pkmnType1Player === "ice"
+        playerTypeSelected === "electric" || playerTypeSelected === "ice"
           ? `Your ${capitaliseName(
               pkmnNamePlayer
-            )} used an ${pkmnType1Player}-type move!`
+            )} used an ${playerTypeSelected}-type move!`
           : `Your ${capitaliseName(
               pkmnNamePlayer
-            )} used a ${pkmnType1Player}-type move!`
+            )} used a ${playerTypeSelected}-type move!`
       );
     }
     if (!attackMode) {
@@ -301,9 +305,15 @@ ${defenderCombination}-type Pokémon!`);
   function handleClick(type) {
     if (gamePlay === true) {
       setGameplay(false);
-      processRound(type);
+      setPlayerTypeSelected(type);
     }
   }
+
+  useEffect(() => {
+    if (playerTypeSelected !== "") {
+      processRound(playerTypeSelected);
+    }
+  }, [playerTypeSelected]);
 
   useEffect(() => {
     if (roundData !== roundDataBlank && gamePlay === false) {
