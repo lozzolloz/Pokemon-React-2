@@ -35,6 +35,10 @@ Pokémon have a 1 in 100 chance of being `shiny`. This can happen for player or 
 
 Pokémon names in the API are given uncapitalised, with hypens instead of spaces and with no special characters. The `capitaliseName` function aims to convert these properly, so that `ditto`, `tapu-lele` and `mr-mime` become `Ditto`, `Tapu Lele` and `Mr. Mime`. Additional form descriptors are removed, so that `gyarados-mega`, `lapras-gmax` and `mr-mime-galar` become `Gyarados`, `Lapras` and `Mr. Mime`.
 
+### Pokémon sprite rendering
+
+Some Pokémon have incomplete sprite data in the API, especially for back sprites and shiny sprites. These Pokémon are skipped over when randomly selecting a Pokémon so that Pokémon sprites will render in each round.
+
 ### Responsiveness
 
 The screen layout is dynamic and will change at certain aspect ratios, appearing different on desktop and mobile.
