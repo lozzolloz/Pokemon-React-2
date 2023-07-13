@@ -211,24 +211,20 @@ function App() {
 
     if (attackMode) {
       setP1(
-        playerTypeSelected === "electric" || playerTypeSelected === "ice"
-          ? `Your ${capitaliseName(
-              pkmnNamePlayer
-            )} used an ${playerTypeSelected}-type move!`
-          : `Your ${capitaliseName(
-              pkmnNamePlayer
-            )} used a ${playerTypeSelected}-type move!`
+        `Your ${capitaliseName(pkmnNamePlayer)} used ${
+          playerTypeSelected === "electric" || playerTypeSelected === "ice"
+            ? "an "
+            : "a "
+        } ${playerTypeSelected}-type move!`
       );
     }
     if (!attackMode) {
       setP1(
-        pkmnType1Rival === "electric" || pkmnType1Rival === "ice"
-          ? `Your rival's ${capitaliseName(
-              pkmnNameRival
-            )} used an ${pkmnType1Rival}-type move!`
-          : `Your rival's ${capitaliseName(
-              pkmnNameRival
-            )} used a ${pkmnType1Rival}-type move!`
+        `Your rival's ${capitaliseName(pkmnNameRival)} used ${
+          pkmnType1Rival === "electric" || pkmnType1Rival === "ice"
+            ? "an "
+            : "a "
+        } ${pkmnType1Rival}-type move!`
       );
     }
 
