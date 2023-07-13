@@ -1,35 +1,28 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import ButtonList from "./Components/ButtonList";
-import PlayerInstruction from "./Components/PlayerInstruction";
-import getRivalType from "./functions/getRivalType";
-import getOutcome from "./functions/getOutcome";
-import capitaliseName from "./functions/capitaliseName";
-import ScoresAndShinies from "./Components/ScoresAndShinies";
-import PkmnImgsGameText from "./Components/PkmnImgsGameText";
-import AttackMode from "./Components/AttackMode";
-import BrockPhoto from "./Components/BrockPhoto";
+import "./fonts/pokemon-hollow.ttf";
 import brockAttack from "./images/brock-attack.png";
 import brockDefend from "./images/brock-defend.png";
 import brockShinyRival from "./images/brock-shiny-rival.png";
 import brockShinyPlayer from "./images/brock-shiny-player.png";
 import brockShinyDouble from "./images/brock-shiny-double.png";
 import pokeball from "./images/pokeball.png";
-import "./fonts/pokemon-hollow.ttf";
+import ButtonList from "./Components/ButtonList";
+import PlayerInstruction from "./Components/PlayerInstruction";
+import ScoresAndShinies from "./Components/ScoresAndShinies";
+import PkmnImgsGameText from "./Components/PkmnImgsGameText";
+import AttackMode from "./Components/AttackMode";
+import BrockPhoto from "./Components/BrockPhoto";
+import effectivenessCalculation from "./functions/effectivenessCalculation";
+import capitaliseName from "./functions/capitaliseName";
+import getPkmnPlayer from "./functions/getPkmnPlayer";
+import { getPkmnRival } from "./functions/getPkmnRival";
 
 function App() {
-  //create states
   const [brockPhoto, setBrockPhoto] = useState(brockAttack);
   const [gamePlay, setGameplay] = useState(true);
-  const [playerType, setPlayerType] = useState("");
-  const [playerPkmnName, setPlayerPkmnName] = useState("");
   const [playerPkmnImg, setPlayerPkmnImg] = useState(pokeball);
-  const [rivalType, setRivalType] = useState("");
-  const [defenderType1, setDefenderType1] = useState("");
-  const [defenderType2, setDefenderType2] = useState("");
-  const [rivalPkmnName, setRivalPkmnName] = useState("");
   const [rivalPkmnImg, setRivalPkmnImg] = useState(pokeball);
-  const [outcome, setOutcome] = useState(null);
   const [p1, setP1] = useState("");
   const [p2, setP2] = useState("");
   const [p3, setP3] = useState("");
@@ -42,11 +35,24 @@ function App() {
   const [attackMode, setAttackMode] = useState(true);
   const [showShinyCountPlayer, setShowShinyCountPlayer] = useState(false);
   const [showShinyCountRival, setShowShinyCountRival] = useState(false);
+  const roundDataBlank = {
+    pkmnNamePlayer: "",
+    pkmnType1Player: "",
+    pkmnType2Player: "",
+    pkmnSpritePlayer: "",
+    pkmnSpriteShinyPlayer: "",
+    pkmnNameRival: "",
+    pkmnType1Rival: "",
+    pkmnType2Rival: "",
+    pkmnSpriteRival: "",
+    pkmnSpriteShinyRival: "",
+    outcome: "",
+  };
+  const [roundData, setRoundData] = useState(roundDataBlank);
 
   function isItShinyPlayer() {
     const randomNo = Math.floor(Math.random() * 100);
     // const randomNo = 0;
-
     if (randomNo === 0) {
       setPlayerShiny(true);
     } else {
@@ -64,321 +70,245 @@ function App() {
     }
   }
 
-  //handleclick function to set the playerType and rivalType states when button clicked
-  function handleClick(type) {
-    if (gamePlay === true) {
-      setGameplay(false);
-      //assign player type
-      setPlayerType(type);
-      //assign rival type
-      setRivalType(getRivalType());
+  function shinyBrockPhoto() {
+    if (playerShiny === true && rivalShiny === true) {
+      setBrockPhoto(brockShinyDouble);
+    }
+    if (playerShiny === true && rivalShiny === false) {
+      setBrockPhoto(brockShinyPlayer);
+    }
+    if (playerShiny === false && rivalShiny === true) {
+      setBrockPhoto(brockShinyRival);
     }
   }
 
-  //get playerPkmnName after type set on click
-  useEffect(() => {
-    async function getPlayerPkmnName(type) {
-      let response = await fetch(
-        `https://pokeapi.co/api/v2/type/${type}?limit=1`
-      );
-      let data = await response.json();
-      let randomNo = Math.floor(Math.random() * (data.pokemon.length - 8));
-      setPlayerPkmnName(data.pokemon[randomNo].pokemon.name);
-    }
-    getPlayerPkmnName(playerType);
-  }, [playerType]);
-
-  //get rivalPkmnName after type set on click
-  useEffect(() => {
-    async function getRivalPkmnName(type) {
-      let response = await fetch(
-        `https://pokeapi.co/api/v2/type/${type}?limit=1`
-      );
-      let data = await response.json();
-
-      let randomNo = Math.floor(Math.random() * (data.pokemon.length - 8));
-
-      setRivalPkmnName(data.pokemon[randomNo].pokemon.name);
-      // rivalPkmnCaps = capitaliseName(rivalPkmn);
-    }
-    getRivalPkmnName(rivalType);
-  }, [rivalType]);
-
-  //define defenderType 1 and defenderType2 which will be undefined if only one type
-  useEffect(() => {
-    async function getDefenderType1and2(pkmnName) {
-      let response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${pkmnName}`
-      );
-      let data = await response.json();
-      console.log(data);
-      setDefenderType1(data.types[0].type.name);
-      setDefenderType2(data.types.length > 1 ? data.types[1].type.name : null);
-    }
-    if (attackMode === true) {
-      getDefenderType1and2(rivalPkmnName);
+  function setSprites() {
+    if (!playerShiny) {
+      setPlayerPkmnImg(roundData.pkmnSpritePlayer);
     } else {
-      getDefenderType1and2(playerPkmnName);
+      setPlayerPkmnImg(roundData.pkmnSpriteShinyPlayer);
+      setPlayerShinyCount((prevCount) => prevCount + 1);
+      setShowShinyCountPlayer(true);
     }
-  }, [attackMode, playerPkmnName, rivalPkmnName]);
+    if (!rivalShiny) {
+      setRivalPkmnImg(roundData.pkmnSpriteRival);
+    } else {
+      setRivalPkmnImg(roundData.pkmnSpriteShinyRival);
+      setRivalShinyCount((prevCount) => prevCount + 1);
+      setShowShinyCountRival(true);
+    }
+  }
 
-  //get playerPkmnImg after name set
-  useEffect(() => {
-    async function getPlayerPkmnImg(pkmnName) {
-      let response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${pkmnName}`
+  function getOutcome(
+    pkmnType1Player,
+    pkmnType2Player,
+    pkmnType1Rival,
+    pkmnType2Rival
+  ) {
+    let outcome;
+    attackMode
+      ? (outcome =
+          1 *
+          effectivenessCalculation(pkmnType1Player, pkmnType1Rival) *
+          effectivenessCalculation(pkmnType1Player, pkmnType2Rival))
+      : (outcome =
+          1 *
+          effectivenessCalculation(pkmnType1Rival, pkmnType1Player) *
+          effectivenessCalculation(pkmnType1Rival, pkmnType2Player));
+    return outcome;
+  }
+
+  function displayRound() {
+    shinyBrockPhoto();
+    setSprites();
+    runGameText();
+  }
+
+  async function processRound(type) {
+    const [playerPkmn, rivalPkmn] = await Promise.all([
+      getPkmnPlayer(type),
+      getPkmnRival(),
+    ]);
+    const outcome = getOutcome(
+      playerPkmn.pkmnType1,
+      playerPkmn.pkmnType2,
+      rivalPkmn.pkmnType1,
+      rivalPkmn.pkmnType2
+    );
+    setRoundData({
+      pkmnNamePlayer: playerPkmn.pkmnName,
+      pkmnType1Player: playerPkmn.pkmnType1,
+      pkmnType2Player: playerPkmn.pkmnType2,
+      pkmnSpritePlayer: playerPkmn.pkmnSprite,
+      pkmnSpriteShinyPlayer: playerPkmn.pkmnSpriteShiny,
+      pkmnNameRival: rivalPkmn.pkmnName,
+      pkmnType1Rival: rivalPkmn.pkmnType1,
+      pkmnType2Rival: rivalPkmn.pkmnType2,
+      pkmnSpriteRival: rivalPkmn.pkmnSprite,
+      pkmnSpriteShinyRival: rivalPkmn.pkmnSpriteShiny,
+      outcome: outcome,
+    });
+  }
+
+  function resetGame() {
+    switch (roundData.outcome) {
+      case 2:
+        attackMode
+          ? setPlayerScore(playerScore + 1)
+          : setRivalScore(rivalScore + 1);
+        break;
+      case 4:
+        attackMode
+          ? setPlayerScore(playerScore + 2)
+          : setRivalScore(rivalScore + 2);
+        break;
+      case 0.5:
+        attackMode
+          ? setRivalScore(rivalScore + 1)
+          : setPlayerScore(playerScore + 1);
+        break;
+      case 0.25:
+        attackMode
+          ? setRivalScore(rivalScore + 2)
+          : setPlayerScore(playerScore + 2);
+        break;
+      case 0:
+        attackMode
+          ? setRivalScore(rivalScore + 3)
+          : setPlayerScore(playerScore + 3);
+        break;
+      default:
+      // no score change
+    }
+    setRoundData(roundDataBlank);
+    setP1("");
+    setP2("");
+    setP3("");
+    isItShinyPlayer();
+    isItShinyRival();
+    setAttackMode(!attackMode);
+    setBrockPhoto(attackMode ? brockDefend : brockAttack);
+    setPlayerPkmnImg(pokeball);
+    setRivalPkmnImg(pokeball);
+    setGameplay(true);
+  }
+
+  function runGameText() {
+    let {
+      pkmnNamePlayer,
+      pkmnType1Player,
+      pkmnType2Player,
+      pkmnNameRival,
+      pkmnType1Rival,
+      pkmnType2Rival,
+      outcome,
+    } = roundData;
+
+    if (attackMode) {
+      setP1(
+        pkmnType1Player === "electric" || pkmnType1Player === "ice"
+          ? `Your ${capitaliseName(
+              pkmnNamePlayer
+            )} used an ${pkmnType1Player}-type move!`
+          : `Your ${capitaliseName(
+              pkmnNamePlayer
+            )} used a ${pkmnType1Player}-type move!`
       );
-      let data = await response.json();
-      console.log(data);
-      //pick normal sprite if not shiny
-      if (!playerShiny) {
-        setPlayerPkmnImg(data.sprites.front_default);
-      } else {
-        //pick shiny sprite if shiny and incread shiny count
-
-        setPlayerPkmnImg(data.sprites.front_shiny);
-        setPlayerShinyCount((prevCount) => prevCount + 1);
-        setShowShinyCountPlayer(true);
-      }
     }
-
-    getPlayerPkmnImg(playerPkmnName);
-  }, [playerPkmnName, playerShiny, playerType]);
-
-  //get rivalPkmnImg after name set
-  useEffect(() => {
-    async function getRivalPkmnImg(pkmnName) {
-      let response = await fetch(
-        `https://pokeapi.co/api/v2/pokemon/${pkmnName}`
-      );
-      let data = await response.json();
-      if (!rivalShiny) {
-        setRivalPkmnImg(data.sprites.front_default);
-      } else {
-        //pick shiny sprite if shiny and increase shiny count
-
-        setRivalPkmnImg(data.sprites.front_shiny);
-        setRivalShinyCount((prevCount) => prevCount + 1);
-        setShowShinyCountRival(true);
-      }
-    }
-
-    getRivalPkmnImg(rivalPkmnName);
-  }, [rivalPkmnName, rivalShiny, rivalType]);
-
-  //define outcomes
-
-  //get outcome once both pkmn names set
-  useEffect(() => {
-    let attackerType = attackMode ? playerType : rivalType;
-
-    if (
-      defenderType1 !== "" &&
-      (defenderType2 !== "" || defenderType2 !== null)
-    ) {
-      setOutcome(
-        1 *
-          getOutcome(attackerType, defenderType1) *
-          getOutcome(attackerType, defenderType2)
+    if (!attackMode) {
+      setP1(
+        pkmnType1Rival === "electric" || pkmnType1Rival === "ice"
+          ? `Your rival's ${capitaliseName(
+              pkmnNameRival
+            )} used an ${pkmnType1Rival}-type move!`
+          : `Your rival's ${capitaliseName(
+              pkmnNameRival
+            )} used a ${pkmnType1Rival}-type move!`
       );
     }
-    if (defenderType1 !== "" && defenderType2 === null) {
-      setOutcome(1 * getOutcome(attackerType, defenderType1));
-    }
-  }, [attackMode, playerType, rivalType, defenderType1, defenderType2]);
 
-  //change game text after outcome set
-  //then resetGame
-  useEffect(() => {
-    //reset function
-    function resetGame() {
-      //updating scores
-      switch (outcome) {
-        case 2:
-          attackMode
-            ? setPlayerScore(playerScore + 1)
-            : setRivalScore(rivalScore + 1);
-          break;
-        case 4:
-          attackMode
-            ? setPlayerScore(playerScore + 2)
-            : setRivalScore(rivalScore + 2);
-          break;
-        case 0.5:
-          attackMode
-            ? setRivalScore(rivalScore + 1)
-            : setPlayerScore(playerScore + 1);
-          break;
-        case 0.25:
-          attackMode
-            ? setRivalScore(rivalScore + 2)
-            : setPlayerScore(playerScore + 2);
-          break;
-        case 0:
-          attackMode
-            ? setRivalScore(rivalScore + 3)
-            : setPlayerScore(playerScore + 3);
-          break;
-        default:
-        // no score change
-      }
-      setBrockPhoto(attackMode ? brockDefend : brockAttack);
-      setPlayerType("");
-      setPlayerPkmnName("");
-      setRivalType("");
-      setDefenderType1("");
-      setDefenderType2("");
-      setRivalPkmnName("");
-      setP1("");
-      setP2("");
-      setP3("");
-      setOutcome(null);
-      isItShinyPlayer();
-      isItShinyRival();
-      setAttackMode(!attackMode);
-      setPlayerPkmnImg(pokeball);
-      setRivalPkmnImg(pokeball);
-      setGameplay(true);
-    }
-
-    //run gametext
-    if (outcome !== null) {
-      if (playerShiny === true && rivalShiny === true) {
-        setBrockPhoto(brockShinyDouble);
-      }
-      if (playerShiny === true && rivalShiny === false) {
-        setBrockPhoto(brockShinyPlayer);
-      }
-      if (playerShiny === false && rivalShiny === true) {
-        setBrockPhoto(brockShinyRival);
-      }
-
+    setTimeout(() => {
+      let defenderCombination;
       if (attackMode) {
-        setP1(
-          playerType === "electric" || playerType === "ice"
-            ? `Your ${capitaliseName(
-                playerPkmnName
-              )} used an ${playerType}-type move!`
-            : `Your ${capitaliseName(
-                playerPkmnName
-              )} used a ${playerType}-type move!`
-        );
+        pkmnType2Rival
+          ? (defenderCombination = `${pkmnType1Rival}/${pkmnType2Rival}`)
+          : (defenderCombination = `${pkmnType1Rival}`);
+        setP2(`Your rival's ${capitaliseName(pkmnNameRival)} is
+${pkmnType1Rival === "electric" || pkmnType1Rival === "ice" ? "an " : "a "}
+${defenderCombination}-type Pokémon!`);
       }
       if (!attackMode) {
-        setP1(
-          rivalType === "electric" || rivalType === "ice"
-            ? `Your rival's ${capitaliseName(
-                rivalPkmnName
-              )} used an ${rivalType}-type move!`
-            : `Your rival's ${capitaliseName(
-                rivalPkmnName
-              )} used a ${rivalType}-type move!`
-        );
+        pkmnType2Player
+          ? (defenderCombination = `${pkmnType1Player}/${pkmnType2Player}`)
+          : (defenderCombination = `${pkmnType1Player}`);
+        setP2(`Your ${capitaliseName(pkmnNamePlayer)} is
+  ${pkmnType1Player === "electric" || pkmnType1Player === "ice" ? "an " : "a "}
+  ${defenderCombination}-type Pokémon!`);
       }
+    }, 2400);
 
-      setTimeout(() => {
-        if (defenderType2 === null) {
-          setP2(
+    setTimeout(() => {
+      //update gametext dependent on outcome
+      switch (outcome) {
+        case 2:
+        case 4:
+          setP3(
             attackMode
-              ? `Your rival's ${capitaliseName(rivalPkmnName)} is ${
-                  defenderType1 === "electric" || defenderType1 === "ice"
-                    ? "an "
-                    : "a "
-                }${defenderType1}-type Pokémon!`
-              : `Your ${capitaliseName(playerPkmnName)} is ${
-                  defenderType1 === "electric" || defenderType1 === "ice"
-                    ? "an "
-                    : "a "
-                }${defenderType1}-type Pokémon!`
+              ? `Your ${capitaliseName(
+                  pkmnNamePlayer
+                )}'s move is super effective!`
+              : `Your rival's ${capitaliseName(
+                  pkmnNameRival
+                )}'s move is super effective!`
           );
-        } else {
-          setP2(
+          break;
+        case 0.5:
+        case 0.25:
+          setP3(
             attackMode
-              ? `Your rival's ${capitaliseName(rivalPkmnName)} is ${
-                  defenderType1 === "electric" || defenderType1 === "ice"
-                    ? "an "
-                    : "a "
-                }${defenderType1}/${defenderType2}-type Pokémon!`
-              : `Your ${capitaliseName(playerPkmnName)} is ${
-                  defenderType1 === "electric" || defenderType1 === "ice"
-                    ? "an "
-                    : "a "
-                }${defenderType1}/${defenderType2}-type Pokémon!`
+              ? `Your ${capitaliseName(
+                  pkmnNamePlayer
+                )}'s move is not very effective...`
+              : `Your rival's ${capitaliseName(
+                  pkmnNameRival
+                )}'s move is not very effective...`
           );
-        }
-      }, 2000);
+          break;
+        case 1:
+          setP3("Your Pokémon are evenly matched!");
+          break;
+        case 0:
+          setP3(
+            attackMode
+              ? `Your ${capitaliseName(pkmnNamePlayer)}'s move had no effect...`
+              : `Your rival's ${capitaliseName(
+                  pkmnNameRival
+                )}'s move had no effect...`
+          );
+          break;
 
-      setTimeout(() => {
-        //update gametext dependent on outcome
-        switch (outcome) {
-          case 2:
-          case 4:
-            setP3(
-              attackMode
-                ? `Your ${capitaliseName(
-                    playerPkmnName
-                  )}'s move is super effective!`
-                : `Your rival's ${capitaliseName(
-                    rivalPkmnName
-                  )}'s move is super effective!`
-            );
-            // setBrockPhoto(attackMode ? brockWin : brockLoss);
-            break;
-          case 0.5:
-          case 0.25:
-            setP3(
-              attackMode
-                ? `Your ${capitaliseName(
-                    playerPkmnName
-                  )}'s move is not very effective...`
-                : `Your rival's ${capitaliseName(
-                    rivalPkmnName
-                  )}'s move is not very effective...`
-            );
-            // setBrockPhoto(attackMode ? brockLoss : brockWin);
-            break;
-          case 1:
-            setP3("Your Pokémon are evenly matched!");
-            break;
-          case 0:
-            setP3(
-              attackMode
-                ? `Your ${capitaliseName(
-                    playerPkmnName
-                  )}'s move had no effect...`
-                : `Your rival's ${capitaliseName(
-                    rivalPkmnName
-                  )}'s move had no effect...`
-            );
-            break;
+        default:
+          setP3("Error");
+      }
+    }, 4800);
 
-          default:
-            setP3("Error");
-        }
-      }, 4000);
-      setTimeout(() => {
-        //reset
-        resetGame();
-      }, 7000);
+    setTimeout(() => {
+      resetGame();
+    }, 8400);
+  }
+
+  function handleClick(type) {
+    if (gamePlay === true) {
+      setGameplay(false);
+      processRound(type);
     }
-  }, [
-    attackMode,
-    outcome,
-    playerPkmnName,
-    rivalPkmnName,
-    playerType,
-    rivalType,
-    defenderType1,
-    defenderType2,
-    playerScore,
-    rivalScore,
-    playerShiny,
-    rivalShiny,
-  ]);
+  }
 
   useEffect(() => {
-    console.log(playerType);
-  }, [playerType]);
+    if (roundData !== roundDataBlank && gamePlay === false) {
+      displayRound();
+    }
+  }, [roundData]);
 
   return (
     <div id="app-border">
@@ -391,22 +321,18 @@ function App() {
           </div>
           <div id="top-right">
             <PlayerInstruction gamePlay={gamePlay} />
-            <ButtonList
-              onClick={handleClick}
-              gamePlay={gamePlay}
-              playerType={playerType}
-            />
+            <ButtonList onClick={handleClick} />
           </div>
         </div>
 
         <PkmnImgsGameText
           id="pkmnimgs-gametext"
-          playerPkmnName={playerPkmnName}
+          playerPkmnName={roundData.pkmnNamePlayer}
           playerPkmnImg={playerPkmnImg}
           p1={p1}
           p2={p2}
           p3={p3}
-          rivalPkmnName={rivalPkmnName}
+          rivalPkmnName={roundData.pkmnNameRival}
           rivalPkmnImg={rivalPkmnImg}
         />
         <ScoresAndShinies

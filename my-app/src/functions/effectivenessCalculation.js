@@ -1,4 +1,4 @@
-export default function getOutcome(attackerType, defenderType) {
+export default function effectivenessCalculation(attackerType, defenderType) {
   let outcome;
 
   switch (attackerType) {
