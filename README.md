@@ -6,6 +6,8 @@ When learning about APIs and finding [PokéAPI](https://pokeapi.co/), I had the 
 
 I initially coded the game in vanilla Javascript in one big file. You can see where I got up to with that in the `old data` folder. Then when I learned about React and component-based architecture, I rebuilt the game that way to practise my React skills. 
 
+Deployed link: [https://brock-paper-scissors.netlify.app](https://brock-paper-scissors.netlify.app/)
+
 ## Features
 
 ### All generations
