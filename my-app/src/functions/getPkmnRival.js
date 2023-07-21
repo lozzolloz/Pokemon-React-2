@@ -1,6 +1,6 @@
 import getRivalType from "./getRivalType";
 
-export async function getPkmnRival() {
+export default async function getPkmnRival() {
   let type = getRivalType();
   let pkmnName;
   let pkmnSprite;

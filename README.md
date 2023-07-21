@@ -2,7 +2,7 @@
 
 One of the first things I made when learning to code was the classic rock-paper-scissors game.
 
-When learning about APIs and finding [PokéAPI](https://pokeapi.co/), I had the idea to combine them and expand the game to include all 18 Pokémon types. 
+When learning about APIs and finding [PokéAPI](https://pokeapi.co/), I had the idea to combine them and expand the game to include all 17 Pokémon types. 
 
 I initially coded the game in vanilla Javascript in one big file. You can see where I got up to with that in the `old data` folder. Then when I learned about React and component-based architecture, I rebuilt the game that way to practise my React skills. 
 
