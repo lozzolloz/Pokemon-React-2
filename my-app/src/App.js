@@ -17,7 +17,7 @@ import BrockPhoto from "./Components/BrockPhoto";
 import effectivenessCalculation from "./functions/effectivenessCalculation";
 import capitaliseName from "./functions/capitaliseName";
 import getPkmnPlayer from "./functions/getPkmnPlayer";
-import { getPkmnRival } from "./functions/getPkmnRival";
+import getPkmnRival from "./functions/getPkmnRival";
 
 function App() {
   const [brockPhoto, setBrockPhoto] = useState(brockAttack);
