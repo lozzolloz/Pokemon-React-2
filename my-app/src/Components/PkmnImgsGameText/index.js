@@ -1,6 +1,6 @@
 import PkmnImg from "../PkmnImg";
 import GameText from "../GameText";
-import "./style.css"
+import "./style.css";
 
 export default function PkmnImgsGameText(props) {
   return (

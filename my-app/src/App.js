@@ -38,12 +38,12 @@ function App() {
   const [showShinyCountRival, setShowShinyCountRival] = useState(false);
   const [playerTypeSelected, setPlayerTypeSelected] = useState("");
   const roundDataBlank = {
-    pkmnNamePlayer: "",
+    pkmnNamePlayer: "Player Pokémon",
     pkmnType1Player: "",
     pkmnType2Player: "",
     pkmnSpritePlayer: "",
     pkmnSpriteShinyPlayer: "",
-    pkmnNameRival: "",
+    pkmnNameRival: "Rival Pokémon",
     pkmnType1Rival: "",
     pkmnType2Rival: "",
     pkmnSpriteRival: "",

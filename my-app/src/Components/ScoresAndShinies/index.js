@@ -2,9 +2,11 @@ import "./style.css";
 
 export default function ScoresAndShinies(props) {
   return (
-    <div id="scores-and-shinies">
+    <div id="scores-and-shinies" data-testid="scores-and-shinies">
       <div id="scores-and-shinies--player">
-        <p id="score-label--player">Your <br></br>score</p>
+        <p id="score-label--player">
+          Your <br></br>score
+        </p>
         <p id="score--player">{props.playerScore}</p>
 
         <p
@@ -47,7 +49,9 @@ export default function ScoresAndShinies(props) {
           Pokémon have a 1 in 100 chance of being shiny!
         </p>
 
-        <p id="score-label--rival">Rival<br></br>score</p>
+        <p id="score-label--rival">
+          Rival<br></br>score
+        </p>
         <p id="score--rival">{props.rivalScore}</p>
       </div>
     </div>

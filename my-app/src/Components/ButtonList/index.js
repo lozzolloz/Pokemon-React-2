@@ -7,7 +7,7 @@ export default function ButtonList(props) {
   }
 
   return (
-    <div id="buttonList">
+    <div id="buttonList" data-testid="button-list">
       <TypeButton type="normal" onClick={() => handleClick("normal")} />
       <TypeButton type="fire" onClick={() => handleClick("fire")} />
       <TypeButton type="water" onClick={() => handleClick("water")} />
