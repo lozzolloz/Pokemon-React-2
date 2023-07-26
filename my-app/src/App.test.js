@@ -44,4 +44,3 @@ test("round 1, attack mode: when type button clicked, round processed,leading to
     expect(screen.getByTestId("p1")).toHaveTextContent(/electric/);
   });
 });
-cd
